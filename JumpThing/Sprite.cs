@@ -63,8 +63,10 @@ namespace JumpThing
                 0f,
                 new Vector2(),
                 SpriteEffects.None,
-                1f); 
+                1f);    
         }
+
+        
     }
 
 }
