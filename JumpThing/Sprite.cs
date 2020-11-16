@@ -107,7 +107,7 @@ namespace JumpThing
         // setAnim()
         // used to change which animation is playing
         //
-        public void setAnim(int newAnim)
+        public void setAnim(int newAnim) // && newAnim < animations.Count//)
         {
             if (currentAnim != newAnim) // only if the new animation is not already playing
             {

@@ -90,6 +90,11 @@ namespace JumpThing
                     jumping = false;
                     falling = true;
                 }
+
+                if (walking) setAnim(1);
+                else if (falling) setAnim(3);
+                else if (jumping) setAnim(2);
+                else setAnim(0);
             }
 
         }
