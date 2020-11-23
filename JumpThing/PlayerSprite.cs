@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+
 
 
 namespace JumpThing
@@ -10,23 +12,32 @@ namespace JumpThing
     class PlayerSprite : Sprite
     {
         bool jumping, walking, falling, jumpIsPressed;
-        const float jumpSpeed = 150f;
+        const float jumpSpeed = 4f;
         const float walkSpeed = 100f;
+        public int lives = 3;
 
-        public PlayerSprite(Texture2D newSpriteSheet, Texture2D newCollisionTxr, Vector2 newLocation)
+        public PlayerSprite(Texture2D newSpriteSheet, Texture2D newCollisionTxr, Vector2 newLocation, SoundEffect newjumpSound, SoundEffect newbumpSound)
             : base(newSpriteSheet, newCollisionTxr, newLocation)
         {
+            jumpSound = newjumpSound;
+            newbumpSound = newbumpSound;
+
+
             spriteOrigin = new Vector2(0.5f, 1f);
             isColliding = true;
             //drawCollision = true;
             collisionInsetMin = new Vector2(0.25f, 0.3f);
-            collisionInsetMax = new Vector2(0.25f, 0f);
+            collisionInsetMax = new Vector2(0.25f, 0.05f);
 
-            frameTime = 0.2f;
+            frameTime = 0.1f;
             animations = new List<List<Rectangle>>();
 
             animations.Add(new List<Rectangle>());
             animations[0].Add(new Rectangle(0, 0, 48, 48));
+            animations[0].Add(new Rectangle(0, 0, 48, 48));
+            animations[0].Add(new Rectangle(0, 0, 48, 48));
+            animations[0].Add(new Rectangle(48, 0, 48, 48));
+            animations[0].Add(new Rectangle(48, 0, 48, 48));
             animations[0].Add(new Rectangle(48, 0, 48, 48));
 
             animations.Add(new List<Rectangle>());
@@ -49,6 +60,47 @@ namespace JumpThing
 
         public void Update(GameTime gameTime, List<PlatformSprite> platforms)
         {
+            KeyboardState keyboardState = Keyboard.GetState();
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+
+            if (!jumpIsPressed && !jumping && !falling &&
+                (keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space)
+                || gamePadState.IsButtonDown(Buttons.A)))
+            {
+                jumpIsPressed = true;
+                jumping = true;
+                walking = false;
+                falling = false;
+                spriteVelocity.Y -= jumpSpeed;
+                jumpSound.Play();
+            }
+            else if (jumpIsPressed && !jumping && !falling &&
+                  !(keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.Space)
+                || gamePadState.IsButtonDown(Buttons.A)))
+            {
+                jumpIsPressed = false;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Left)
+                || gamePadState.IsButtonDown(Buttons.DPadLeft))
+            {
+                walking = true;
+                spriteVelocity.X = -walkSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                flipped = true;
+            }
+            else if (keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.Right)
+                || gamePadState.IsButtonDown(Buttons.DPadRight))
+            {
+                walking = true;
+                spriteVelocity.X = walkSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                flipped = false;
+            }
+            else
+            {
+                walking = false;
+                spriteVelocity.X = 0;
+            }
+
             if((falling || jumping) && spriteVelocity.Y < 500f) spriteVelocity.Y += 5f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             spritePos += spriteVelocity;
 
@@ -58,6 +110,7 @@ namespace JumpThing
             {
                 if (checkCollisionBelow(platform))
                 {
+                    bumpSound.Play();
                     hasCollided = true;
                     while (checkCollision(platform)) spritePos.Y--;
                     spriteVelocity.Y = 0;
@@ -75,13 +128,13 @@ namespace JumpThing
                 if (checkCollisionLeft(platform))
                 {
                     hasCollided = true;
-                    while (checkCollision(platform)) spritePos.X++;
+                    while (checkCollision(platform)) spritePos.X--;
                     spriteVelocity.X = 0;               
                 }
                 if (checkCollisionRight(platform))
                 {
                     hasCollided = true;
-                    while (checkCollision(platform)) spritePos.X--;
+                    while (checkCollision(platform)) spritePos.X++;
                     spriteVelocity.X = 0;
                 }
                 if (!hasCollided && walking) falling = true;

@@ -24,3 +24,5 @@ F:\Clasess project\monogame projects\First game scraps\JumpThing\JumpThing\JumpT
 F:\Clasess project\monogame projects\First game scraps\JumpThing\JumpThing\JumpThing\obj\Debug\netcoreapp3.1\JumpThing.dll
 F:\Clasess project\monogame projects\First game scraps\JumpThing\JumpThing\JumpThing\obj\Debug\netcoreapp3.1\JumpThing.pdb
 F:\Clasess project\monogame projects\First game scraps\JumpThing\JumpThing\JumpThing\obj\Debug\netcoreapp3.1\JumpThing.genruntimeconfig.cache
+F:\Clasess project\monogame projects\First game scraps\JumpThing\JumpThing\JumpThing\bin\Debug\netcoreapp3.1\Content\UiText.xnb
+F:\Clasess project\monogame projects\First game scraps\JumpThing\JumpThing\JumpThing\bin\Debug\netcoreapp3.1\Content\HeartFont.xnb
