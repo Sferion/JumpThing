@@ -15,12 +15,13 @@ namespace JumpThing
         const float jumpSpeed = 4f;
         const float walkSpeed = 100f;
         public int lives = 3;
+        SoundEffect jumpSound, bumpSound;
 
         public PlayerSprite(Texture2D newSpriteSheet, Texture2D newCollisionTxr, Vector2 newLocation, SoundEffect newjumpSound, SoundEffect newbumpSound)
             : base(newSpriteSheet, newCollisionTxr, newLocation)
         {
             jumpSound = newjumpSound;
-            newbumpSound = newbumpSound;
+            bumpSound = newbumpSound;
 
 
             spriteOrigin = new Vector2(0.5f, 1f);

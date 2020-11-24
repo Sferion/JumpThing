@@ -56,13 +56,12 @@ namespace JumpThing
             heartFont = Content.Load<SpriteFont>("HeartFont");
             jumpSound = Content.Load<SoundEffect>("jump");
             bumpSound = Content.Load<SoundEffect>("bump");
-            fanfareSound = Content.Load<SoundEffect>("fanfar");
+            fanfareSound = Content.Load<SoundEffect>("fanfare");
 
             whiteBox = new Texture2D(GraphicsDevice, 1, 1);
             whiteBox.SetData(new[] { Color.White });
 
-            playerSprite = new PlayerSprite(playerSheetTxr, whiteBox, new Vector2(50, 50));
-            //testPlatform = new PlatformSprite(platformSheetTxr, whiteBox, new Vector2(100, 300));
+            playerSprite = new PlayerSprite(playerSheetTxr, whiteBox, new Vector2(50, 50),jumpSound, bumpSound);            
             coinSprite = new CoinSprite(playerSheetTxr, whiteBox, new Vector2(200, 200));
 
             BuildLevels();
